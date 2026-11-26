@@ -1,12 +1,13 @@
 # The site on GitHub Pages: the page from site/ on main, and setup.sh from the v1 tag. It's built
-# again when either changes: a push to main that touches the site, or a release moving v1.
+# again when either changes: a push to main that touches the site, or a release moving v1, which
+# starts it on main (scripts/release.sh). Always from main: the github-pages environment only lets
+# main deploy, and a run started by the tag would be refused.
 name: Pages
 
 on:
   push:
     branches: [main]
     paths: [site/**, examples/**, scripts/site.sh, .github/workflows/pages.yml]
-    tags: [v1]
   workflow_dispatch:
 
 permissions:
