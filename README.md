@@ -75,7 +75,24 @@ look:
 </picture>
 </p>
 
-## Dot matrix and OLED cards
+Top repos and Most used: your most starred repos, and your most downloaded ones, with your actions by how many repos use them.
+
+```yaml
+show: [repos, downloads]
+```
+
+<p align="center">
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="examples/cards/more/repos-dark.svg">
+  <img src="examples/cards/more/repos-light.svg" width="400" alt="Top repos">
+</picture>
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="examples/cards/more/downloads-dark.svg">
+  <img src="examples/cards/more/downloads-light.svg" width="400" alt="Most used">
+</picture>
+</p>
+
+## Dot matrix, floating and OLED cards
 
 The same numbers as pinball-style displays: big readable text in a dot font, one item at a time with pinball transitions. `style: dotmatrix` draws them in round LEDs over a faint grid of unlit ones; `style: floating` in the same round LEDs with no grid, so they float on the panel or the page; `style: oled` in square pixels. Their colour is GitHub's (the default), amber, green, purple, cyan, red or blue, on a transparent background or a colour of your own.
 
@@ -128,6 +145,20 @@ look:
   <source media="(prefers-color-scheme: dark)" srcset="examples/dotmatrix-cards/green/about-dark.svg">
   <img src="examples/dotmatrix-cards/green/about-light.svg" width="400" alt="Green about">
 </picture>
+</p>
+
+**Floating**: the round LEDs without the grid; here cyan on a dark panel.
+
+```yaml
+look:
+  style: floating
+  color: cyan
+  background: 070c0d
+```
+
+<p align="center">
+<img src="examples/floating-cards/summary.svg" width="400" alt="Floating summary">
+<img src="examples/floating-cards/streaks.svg" width="400" alt="Floating streaks">
 </p>
 
 **OLED**: square pixels, in any colour; here purple on a dark panel.
