@@ -11,7 +11,7 @@ import { renderLanguages } from '../src/cards/languages/classic.ts';
 import { MAX_LANGUAGES } from '../src/cards/languages/index.ts';
 import { renderRepos } from '../src/cards/repos/classic.ts';
 import { renderDownloads } from '../src/cards/downloads/classic.ts';
-import { MAX_USED } from '../src/cards/downloads/index.ts';
+import { MAX_DOWNLOADS } from '../src/cards/downloads/index.ts';
 import { MAX_REPOS } from '../src/cards/repos/index.ts';
 import { fixture } from './fixtures/snapshot.ts';
 
@@ -88,11 +88,11 @@ describe('cards', () => {
     expect(Math.max(...rows) + 34).toBeLessThanOrEqual(CARD_HEIGHT - PAD);
   });
 
-  it('fits the most used repos there can be, and both numbers in a column', () => {
-    const items = Array.from({ length: MAX_USED }, (_, i) => ({ name: `repo-${i}`, downloads: 98_765 - i, users: i % 2 ? 1234 : 0, language: null }));
+  it('fits the most downloaded repos there can be, and both numbers in a column', () => {
+    const items = Array.from({ length: MAX_DOWNLOADS }, (_, i) => ({ name: `repo-${i}`, downloads: 98_765 - i, users: i % 2 ? 1234 : 0, language: null }));
     const svg = renderDownloads(items, THEMES.light, DEFAULT_CONFIG);
     const rows = [...svg.matchAll(/<g transform="translate\(\d+(?:\.\d+)? (\d+(?:\.\d+)?)\)"><g class="fade"/g)].map((m) => Number(m[1]));
-    expect(rows).toHaveLength(MAX_USED);
+    expect(rows).toHaveLength(MAX_DOWNLOADS);
     expect(Math.max(...rows) + 34).toBeLessThanOrEqual(CARD_HEIGHT - PAD);
     // Downloads and users: "99k" by one icon, "1.2k repos" by the other, ending inside the column.
     expect(svg).toContain('>99k</text>');

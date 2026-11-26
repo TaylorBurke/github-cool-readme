@@ -1,8 +1,8 @@
-// The downloads card's entries: your public repos most used, by release downloads and, for an
+// The downloads card's entries: your public repos most downloaded, by release downloads and, for an
 // action, the other people's repos whose workflows use it. Both count as one each.
 import type { Counted } from '../../compute.ts';
 
-export interface Used {
+export interface DownloadedRepo {
   /** Its name, without your login. */
   name: string;
   /** Its release assets' downloads, all time. */
@@ -13,10 +13,10 @@ export interface Used {
   language: { name: string; color: string | null } | null;
 }
 
-export function downloadsData({ snapshot, config, known }: Counted): Used[] {
+export function downloadsData({ snapshot, config, known }: Counted): DownloadedRepo[] {
   const s = config.cards.downloads;
   const hidden = known(s.hide, 'cards.downloads.hide');
-  const total = (u: Used) => u.downloads + u.users;
+  const total = (u: DownloadedRepo) => u.downloads + u.users;
   // Public ones only, whatever the count settings say: the card would put a private repo's name on
   // your profile.
   return snapshot.ownedRepos
@@ -24,7 +24,7 @@ export function downloadsData({ snapshot, config, known }: Counted): Used[] {
       const r = snapshot.repos[key];
       return r && !r.isPrivate && !hidden.has(key) && (snapshot.downloads[key] || snapshot.actionUsers[key]);
     })
-    .map((key): Used => {
+    .map((key): DownloadedRepo => {
       const r = snapshot.repos[key];
       const main = [...r.languages].sort((a, b) => b.size - a.size)[0];
       return {

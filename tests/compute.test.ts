@@ -130,7 +130,7 @@ describe('top repos', () => {
   });
 });
 
-describe('most used', () => {
+describe('downloads', () => {
   const names = (m: ReturnType<typeof compute>) => m.downloads.map((u) => u.name);
 
   it("lists your public repos by downloads, forks too: a fork's releases are its own", () => {

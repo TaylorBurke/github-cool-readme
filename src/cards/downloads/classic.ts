@@ -1,5 +1,5 @@
 import type { Config } from '../../config.ts';
-import type { Used } from './data.ts';
+import type { DownloadedRepo } from './data.ts';
 import { icon } from '../../render/icons.ts';
 import { CONTENT_TOP, PAD, SMALL, TEXT, WIDTH, card, fadeIn, headerText, textWidth, truncate, type Theme } from '../../render/classic.ts';
 import { esc, formatCompact } from '../../text.ts';
@@ -13,17 +13,17 @@ const NAME_X = 16; // after the language's dot
 const count = (n: number, word: string) => `${formatCompact(n)} ${word}${n === 1 ? '' : 's'}`;
 
 /** What's under a repo's name: "709 downloads", "used in 67 repos", or both. */
-export function describe(u: Used): string {
+export function describe(u: DownloadedRepo): string {
   return [u.downloads ? count(u.downloads, 'download') : '', u.users ? `used in ${count(u.users, 'repo')}` : ''].filter(Boolean).join(' · ');
 }
 
 /** Each in words, for the card's description. */
-export function describeAll(items: Used[]): string {
+export function describeAll(items: DownloadedRepo[]): string {
   return items.map((u) => `${u.name}: ${describe(u)}`).join('. ');
 }
 
 /** Under the name: an icon and the words, or with both numbers, an icon and a number for each. */
-function numbers(u: Used): string {
+function numbers(u: DownloadedRepo): string {
   const at = (x: number, name: 'download' | 'workflow', text: string) =>
     icon(name, x, 19, 14) + `<text x="${x + 18}" y="30" class="small secondary">${esc(text)}</text>`;
   if (!u.users) return at(NAME_X, 'download', count(u.downloads, 'download'));
@@ -32,12 +32,12 @@ function numbers(u: Used): string {
   return at(NAME_X, 'download', first) + at(NAME_X + 18 + textWidth(first, SMALL) + 12, 'workflow', count(u.users, 'repo'));
 }
 
-export function renderDownloads(items: Used[], theme: Theme, config: Config): string {
+export function renderDownloads(items: DownloadedRepo[], theme: Theme, config: Config): string {
   const title = config.cards.downloads.title;
   const header = title ? headerText(title, PAD) : '';
   if (!items.length) {
     return card({
-      title: title ?? 'Most used', desc: 'No downloads yet.', theme, config,
+      title: title ?? 'Most downloaded', desc: 'No downloads yet.', theme, config,
       body: header + `<text x="${PAD}" y="${CONTENT_TOP + 14}" class="label muted">No downloads yet</text>`,
     });
   }
@@ -57,5 +57,5 @@ export function renderDownloads(items: Used[], theme: Theme, config: Config): st
     )
     .join('\n');
 
-  return card({ title: title ?? 'Most used', desc: describeAll(items), theme, config, body: header + '\n' + rows });
+  return card({ title: title ?? 'Most downloaded', desc: describeAll(items), theme, config, body: header + '\n' + rows });
 }

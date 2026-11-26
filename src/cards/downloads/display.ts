@@ -1,6 +1,6 @@
-// Most used as a pinball-style display: one repo at a time, its biggest number large.
+// Most downloaded as a pinball-style display: one repo at a time, its biggest number large.
 
-import type { Used } from './data.ts';
+import type { DownloadedRepo } from './data.ts';
 import { describeAll } from './classic.ts';
 import { formatCompact } from '../../text.ts';
 import { textCells, textWidth } from '../../display/font.ts';
@@ -9,7 +9,7 @@ import { fit, titleLine } from '../../display/text.ts';
 import { slideshow, type Item } from '../../display/slides.ts';
 
 /** The large number, and what's under the name: what it counts, then the other number. */
-function numbers(u: Used): { big: number; details: string } {
+function numbers(u: DownloadedRepo): { big: number; details: string } {
   const downloads = u.downloads === 1 ? 'DOWNLOAD' : 'DOWNLOADS';
   const users = (n: number) => `${n === 1 ? 'REPO USES' : 'REPOS USE'} IT`;
   if (u.downloads >= u.users) {
@@ -18,12 +18,12 @@ function numbers(u: Used): { big: number; details: string } {
   return { big: u.users, details: [users(u.users), u.downloads ? `${formatCompact(u.downloads).toUpperCase()} ${downloads}` : ''].filter(Boolean).join(' · ') };
 }
 
-export function renderDisplayDownloads(items: Used[], title: string | null, style: Style): string {
+export function renderDisplayDownloads(items: DownloadedRepo[], title: string | null, style: Style): string {
   const { look } = style;
   const header = titleLine(title, style);
   if (!items.length) {
     return frame({
-      title: title ?? 'Most used', desc: 'No downloads yet.', ...style, css: '',
+      title: title ?? 'Most downloaded', desc: 'No downloads yet.', ...style, css: '',
       body: header + path(style, textCells('NO DOWNLOADS YET', 4, 24), look.lit),
     });
   }
@@ -41,7 +41,7 @@ export function renderDisplayDownloads(items: Used[], title: string | null, styl
   const show = slideshow('d', slides, { col: 0, row: 16, cols: COLS, rows: 51 }, style, ['push', 'type', 'wipe']);
 
   return frame({
-    title: title ?? 'Most used',
+    title: title ?? 'Most downloaded',
     desc: describeAll(items),
     ...style,
     css: show.css,
