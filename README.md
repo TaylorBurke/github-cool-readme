@@ -121,8 +121,8 @@ look:
 
 <p align="center">
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="examples/dotmatrix-cards/green/streaks-dark.svg">
-  <img src="examples/dotmatrix-cards/green/streaks-light.svg" width="400" alt="Green streaks">
+  <source media="(prefers-color-scheme: dark)" srcset="examples/dotmatrix-cards/green/downloads-dark.svg">
+  <img src="examples/dotmatrix-cards/green/downloads-light.svg" width="400" alt="Green most downloaded">
 </picture>
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="examples/dotmatrix-cards/green/about-dark.svg">

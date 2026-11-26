@@ -34,7 +34,7 @@ const looks: { dir: string; look: Record<string, string>; cards: readonly Card[]
   { dir: 'cards/more', look: { style: 'classic' }, cards: ['repos', 'downloads'] },
   { dir: 'dotmatrix-cards', look: { style: 'dotmatrix', color: 'amber', background: '0d0b07' }, cards: ['summary', 'languages'], panel: true },
   { dir: 'dotmatrix-cards/github', look: { style: 'dotmatrix' }, cards: ['contributions', 'weekly'] },
-  { dir: 'dotmatrix-cards/green', look: { style: 'dotmatrix', color: 'green' }, cards: ['streaks', 'about'] },
+  { dir: 'dotmatrix-cards/green', look: { style: 'dotmatrix', color: 'green' }, cards: ['streaks', 'downloads', 'about'] },
   { dir: 'oled-cards', look: { style: 'oled', color: 'purple', background: '0b0710' }, cards: ['summary', 'languages', 'repos', 'contributions'], panel: true },
   { dir: 'floating-cards', look: { style: 'floating', color: 'cyan', background: '070c0d' }, cards: ['summary', 'streaks', 'downloads', 'weekly'], panel: true },
 ];
