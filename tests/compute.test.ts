@@ -54,6 +54,19 @@ describe('languages', () => {
     expect(shares(compute(fixture(), config()))).toEqual({ Ruby: 34.3, C: 25.7, Batchfile: 22.9, Rust: 14.3, Python: 2.9 });
   });
 
+  it('measures by raw code size with by: size, in your and your organizations\' repos, forks left out', () => {
+    const s = fixture();
+    s.repos['octo/fork'].languages = [{ name: 'Go', color: '#00ADD8', size: 99999 }];
+    s.repos['big/project'].languages = [{ name: 'Java', color: '#b07219', size: 99999 }];
+    s.allTime.push({ ...s.allTime[0], byRepo: {
+      'octo/fork': { commits: 5, pullRequests: 0, reviews: 0, issues: 0 },
+      'big/project': { commits: 5, pullRequests: 0, reviews: 0, issues: 0 },
+    } });
+    const m = compute(s, config((c) => (c.cards.languages.by = 'size')));
+    expect(shares(m)).toEqual({ C: 36, Ruby: 24, Rust: 20, Batchfile: 16, Python: 4 });
+    expect(shares(compute(s, config()))).not.toHaveProperty('Python', 4); // commits stay the default
+  });
+
   it('drops an excluded language, without handing its share to the repo\'s other languages', () => {
     const m = compute(fixture(), config((c) => (c.cards.languages.hide = ['batchfile'])));
     expect(shares(m)).toEqual({ Ruby: 44.4, C: 33.3, Rust: 18.5, Python: 3.7 });
