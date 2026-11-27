@@ -53,6 +53,8 @@ describe('config', () => {
     expect(() => parseConfig('cards:\n  languages:\n    count: 7\n')).toThrow('"cards.languages.count" must be at most 6, "Other" included');
     expect(() => parseConfig('cards:\n  repos:\n    count: 7\n')).toThrow('"cards.repos.count" must be at most 6');
     expect(() => parseConfig('cards:\n  downloads:\n    count: 7\n')).toThrow('"cards.downloads.count" must be at most 6');
+    expect(() => parseConfig('cards:\n  languages:\n    by: bytes\n')).toThrow('"cards.languages.by" must be "commits" or "size"');
+    expect(parseConfig('cards:\n  languages:\n    by: size\n').cards.languages.by).toBe('size');
     expect(() => parseConfig('cards:\n  languages:\n    count: six\n')).toThrow('"cards.languages.count" must be a positive whole number');
     expect(() => parseConfig('cards:\n  languages:\n    repos:\n      a: -1\n')).toThrow('cards.languages.repos');
     expect(() => parseConfig('look:\n  style: fancy\n')).toThrow('"look.style" must be "classic", "oled", "dotmatrix" or "floating"');

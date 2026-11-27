@@ -10,8 +10,11 @@ export interface LanguageItem {
 }
 
 export function languagesData({ snapshot, config, login, included, known }: Counted): LanguageItem[] {
-  // Languages: each repo's language mix, weighted by your commits there (all time).
+  // Languages: each repo's language mix, weighted by your commits there (all time); or with by: size,
+  // each repo's code by its size, in your and your organizations' repos you committed to, not forks:
+  // a fork, or someone else's project, is mostly code you didn't write.
   const lc = config.cards.languages;
+  const bySize = lc.by === 'size';
   const excludedLangs = new Set(lc.hide.map((l) => l.toLowerCase()));
   const weights = new Map<string, number>(); // 0 leaves a repo out
   for (const [ref, w] of Object.entries(lc.repos)) weights.set(repoKey(ref, login), w);
@@ -27,16 +30,19 @@ export function languagesData({ snapshot, config, login, included, known }: Coun
   const scores = new Map<string, { color: string | null; score: number }>();
   for (const [key, commits] of commitsByRepo) {
     if (!included(key)) continue;
+    const repo = snapshot.repos[key];
+    const yours = repo.owner.toLowerCase() === login || (repo.ownerIsOrg && snapshot.orgs.includes(repo.owner.toLowerCase()));
+    if (bySize && (repo.isFork || !yours)) continue;
     const weight = weights.get(key) ?? 1;
     if (weight === 0) continue;
     // An excluded language's share of the repo is dropped, not handed to the repo's other languages.
-    const langs = snapshot.repos[key].languages;
+    const langs = repo.languages;
     const size = langs.reduce((s, l) => s + l.size, 0);
     if (!size) continue;
     for (const l of langs) {
       if (excludedLangs.has(l.name.toLowerCase())) continue;
       const entry = scores.get(l.name) ?? { color: l.color, score: 0 };
-      entry.score += (commits * weight * l.size) / size;
+      entry.score += bySize ? weight * l.size : (commits * weight * l.size) / size;
       scores.set(l.name, entry);
     }
   }
